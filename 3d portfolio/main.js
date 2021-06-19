@@ -61,7 +61,7 @@ scene.background = spaceTexture;
 
 // Bram Square
 
-const bramTexture = new THREE.TextureLoader().load('bram_bear.JPG');
+const bramTexture = new THREE.TextureLoader().load('bulltrout.jpeg');
 const normalTexture = new THREE.TextureLoader().load('normal.jpg');
 
 const bram = new THREE.Mesh(
@@ -141,15 +141,14 @@ function moveCamera() {
   moon.rotation.y += 0.075;
   moon.rotation.z += 0.05;
 
-  bram.rotation.x += 0.01;
-  bram.rotation.y += 0.01;
-  bram.rotation.z += 0.01;
+  bram.rotation.y += 0.005;
+  bram.rotation.z += 0.005;
 
   sweat.rotation.y += 0.01;
   sweat.rotation.z += 0.01;
 
   camera.position.z = t * -0.01;
-  camera.position.x = t * -0.0002;
+  camera.position.x = t * -0.0004;
   camera.rotation.y = t * -0.0002;
 }
 
@@ -162,12 +161,15 @@ function animate() {
   requestAnimationFrame(animate);
 
   moon.rotation.x += 0.005;
+  moon.rotation.y += 0.005;
 
-  bram.rotation.x += 0.05;
-  bram.rotation.y += 0.05;
+  bram.rotation.x += 0.005;
+  bram.rotation.y += 0.005;
+  bram.rotation.z += 0.005;
  
-  sweat.rotation.y += 0.05;
-  sweat.rotation.z += 0.05;
+  sweat.rotation.x += 0.005;
+  sweat.rotation.y += 0.005;
+  sweat.rotation.z += 0.005;
 
   mars.rotation.x += 0.005;
   mars.rotation.y += 0.01;
