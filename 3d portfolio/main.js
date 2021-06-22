@@ -13,12 +13,19 @@ const renderer = new THREE.WebGLRenderer({
   canvas: document.querySelector('#bg'),
 });
 
+const loadingManager = new THREE.LoadingManager( () => {
+  const loadingScreen = document.getElementById( 'loading-screen' );
+  loadingScreen.classList.add( 'fade-out' );
+  loadingScreen.addEventListener( 'transitionend', onTransitionEnd );
+});
+
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
 camera.position.setZ(30);
 camera.position.setX(-3);
 
 renderer.render(scene, camera);
+
 
 // Lights
 
@@ -39,6 +46,9 @@ scene.add(lightHelper, gridHelper)
 
 const controls = new OrbitControls(camera, renderer.domElement);
 
+controls.target.set(0, 2, 0);
+controls.update();
+
 function addStar() {
   const geometry = new THREE.SphereGeometry(0.25, 24, 24);
   const material = new THREE.MeshStandardMaterial({ color: 0xffffff });
@@ -53,6 +63,10 @@ function addStar() {
 }
 
 Array(200).fill().forEach(addStar);
+
+
+// callback function for loading screen
+
 
 // Background
 
@@ -79,7 +93,7 @@ scene.add(bram);
 const sweatTexture = new THREE.TextureLoader().load('SBLOGO.jpg');
 
 const sweat = new THREE.Mesh(
-  new THREE.SphereGeometry(3, 32, 32), 
+  new THREE.SphereGeometry(3, 48, 48), 
   new THREE.MeshStandardMaterial({ 
     map: sweatTexture,
     normalMap: normalTexture
@@ -94,7 +108,7 @@ scene.add(sweat);
 const moonTexture = new THREE.TextureLoader().load('moon.jpeg');
 
 const moon = new THREE.Mesh(
-  new THREE.SphereGeometry(2, 24, 24),
+  new THREE.SphereGeometry(2, 16, 16),
   new THREE.MeshStandardMaterial({
     map: moonTexture,
     normalMap: normalTexture,
@@ -138,7 +152,7 @@ mars.position.x = -10;
 function moveCamera() {
   const t = document.body.getBoundingClientRect().top;
   moon.rotation.x += 0.05;
-  moon.rotation.y += 0.075;
+  moon.rotation.y += 0.05;
   moon.rotation.z += 0.05;
 
   bram.rotation.y += 0.005;
@@ -158,6 +172,7 @@ moveCamera();
 // Animation Loop
 
 function animate() {
+
   requestAnimationFrame(animate);
 
   moon.rotation.x += 0.005;
@@ -177,6 +192,20 @@ function animate() {
   // controls.update();
 
   renderer.render(scene, camera);
+}
+
+// Stops loading bar from constantly rendering in DOM
+
+function render() {
+  const delta = clock.getDelta();
+  if ( mixer !== undefined ) mixer.update( delta );
+
+  renderer.render(scene, camera);
+}
+
+function onTransitionEnd( event ) {
+  const element = event.target;
+  element.remove;
 }
 
 animate();
